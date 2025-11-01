@@ -160,6 +160,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle all navigation links with transition
     function navigateToPage(url) {
+        // Set flag to indicate we're navigating
+        sessionStorage.setItem('isNavigating', 'true');
+        
         // Show the transition overlay
         transitionOverlay.classList.add('active');
         
@@ -172,53 +175,37 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle the page loading transition
     function handlePageLoadTransition() {
-        // Add transition overlay to the DOM if not already present
-        if (!document.querySelector('.transition-overlay')) {
-            const overlay = document.createElement('div');
-            overlay.className = 'transition-overlay';
-            overlay.innerHTML = `
-                <img src="/assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
-            `;
-            document.body.appendChild(overlay);
-        }
-
         const pageTransitionOverlay = document.querySelector('.transition-overlay');
         if (pageTransitionOverlay) {
-            // Show overlay on page load
-            pageTransitionOverlay.classList.add('active');
+            // Check if this page load was from a navigation event (not direct visit)
+            const isNavigating = sessionStorage.getItem('isNavigating');
             
-            // When the page is fully loaded, play the exit animation
-            window.addEventListener('load', function() {
-                // Wait for the logo to be fully visible before starting to fade out
-                setTimeout(() => {
-                    // Start fade out of the logo
-                    pageTransitionOverlay.classList.add('fade-out');
-                    
-                    // Remove the overlay after the fade out animation completes
+            if (isNavigating === 'true') {
+                // This is a navigation from another page, show the transition
+                pageTransitionOverlay.classList.add('active');
+                
+                // Mark that we're no longer navigating
+                sessionStorage.setItem('isNavigating', 'false');
+                
+                // When the page is fully loaded, fade out the transition overlay
+                window.addEventListener('load', function() {
+                    // Wait for the logo to be fully visible before starting to fade out
                     setTimeout(() => {
-                        pageTransitionOverlay.classList.remove('active', 'fade-out');
-                    }, 400); // Match the CSS transition duration
-                }, 700); // Delay before starting fade out (logo transition time + buffer)
-            });
+                        // Start fade out of the logo and background
+                        pageTransitionOverlay.classList.add('fade-out');
+                        
+                        // Remove the overlay after the fade out animation completes
+                        setTimeout(() => {
+                            pageTransitionOverlay.classList.remove('active', 'fade-out');
+                        }, 400); // Match the CSS transition duration
+                    }, 500); // Delay before starting fade out to ensure logo is visible
+                });
+            }
         }
     }
 
-    // State to track page transitions
-    let isPageTransitioning = false;
-
-    // Handle browser back/forward button navigation properly
-    window.addEventListener('popstate', function(event) {
-        // Add the transition effect when navigating with browser back/forward
-        const overlay = document.querySelector('.transition-overlay');
-        if (overlay) {
-            overlay.classList.add('active');
-            
-            // Remove the overlay after some time to allow for smooth transition
-            setTimeout(() => {
-                overlay.classList.remove('active');
-            }, 500);
-        }
-    });
+    // Don't handle browser back/forward button navigation with animation
+    // Only animate when user clicks navigation buttons
 
     // Handle all navigation links with transition - including relative paths
     document.querySelectorAll('a[href]').forEach(link => {
