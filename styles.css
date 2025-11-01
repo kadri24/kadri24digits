@@ -561,7 +561,6 @@ main, .main {
     .footer p {
         font-size: 12px;
     }
-<<<<<<< HEAD
 }
 
 .footer-container {
@@ -654,6 +653,4 @@ main, .main {
 
 .transition-overlay.fade-out .transition-logo {
     opacity: 0;
-=======
->>>>>>> parent of 2746bbd (Update branding and footer across site)
 }
