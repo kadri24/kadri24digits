@@ -27,6 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 0);
     }
 
+    // Create transition overlay
+    const transitionOverlay = document.createElement('div');
+    transitionOverlay.className = 'transition-overlay';
+    transitionOverlay.innerHTML = `
+        <img src="assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
+    `;
+    document.body.appendChild(transitionOverlay);
+
     // Hamburger menu
     const hamburger = document.querySelector('.hamburger');
     const navLinks = document.querySelector('.nav-links');
@@ -107,12 +115,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Close menu when a link is clicked
         document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                if (navLinks.classList.contains('active')) {
-                    links.forEach(l => l.style.animation = '');
-                    hamburger.classList.remove('active');
-                    navLinks.classList.remove('active');
-                    overlay.classList.remove('active');
+            link.addEventListener('click', function(e) {
+                // Get the href and check if it's an internal navigation link
+                const href = this.getAttribute('href');
+                if (href && 
+                    !href.startsWith('http') && 
+                    !href.startsWith('#') && 
+                    !href.startsWith('mailto:') && 
+                    !href.startsWith('tel:') && 
+                    !this.hasAttribute('download')) {
+                    
+                    e.preventDefault();
+                    
+                    if (navLinks.classList.contains('active')) {
+                        links.forEach(l => l.style.animation = '');
+                        hamburger.classList.remove('active');
+                        navLinks.classList.remove('active');
+                        overlay.classList.remove('active');
+                    }
+                    
+                    navigateToPage(this.href);
                 }
             });
         });
@@ -130,6 +152,78 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Handle all navigation links with transition
+    function navigateToPage(url) {
+        // Show the transition overlay
+        transitionOverlay.classList.add('active');
+        
+        // Wait for the background to fade in completely, then the logo
+        setTimeout(() => {
+            // Redirect after the background appears but before the logo fully appears
+            window.location.href = url;
+        }, 300); // Wait for background to show (150ms) and some extra time for logo to appear
+    }
+
+    // Handle the page loading transition
+    function handlePageLoadTransition() {
+        // Add transition overlay to the DOM if not already present
+        if (!document.querySelector('.transition-overlay')) {
+            const overlay = document.createElement('div');
+            overlay.className = 'transition-overlay';
+            overlay.innerHTML = `
+                <img src="assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        const pageTransitionOverlay = document.querySelector('.transition-overlay');
+        if (pageTransitionOverlay) {
+            // Show overlay on page load
+            pageTransitionOverlay.classList.add('active');
+            
+            // When the page is fully loaded, play the exit animation
+            window.addEventListener('load', function() {
+                // Wait for the logo to be fully visible before starting to fade out
+                setTimeout(() => {
+                    // Start fade out of the logo
+                    pageTransitionOverlay.classList.add('fade-out');
+                    
+                    // Remove the overlay after the fade out animation completes
+                    setTimeout(() => {
+                        pageTransitionOverlay.classList.remove('active', 'fade-out');
+                    }, 500); // Match the CSS transition duration
+                }, 300); // Delay before starting fade out
+            });
+        }
+    }
+
+    // Handle all navigation links with transition - including relative paths
+    document.querySelectorAll('a[href]').forEach(link => {
+        // Check if this is an internal link (relative or absolute)
+        const href = link.getAttribute('href');
+        if (href && 
+            !href.startsWith('http') && 
+            !href.startsWith('#') && 
+            !href.startsWith('mailto:') && 
+            !href.startsWith('tel:') && 
+            !link.hasAttribute('download')) {
+            
+            link.addEventListener('click', function(e) {
+                // Get the full URL for the target
+                const targetUrl = new URL(this.href, window.location.origin).href;
+                
+                // Only handle if it's an internal link
+                if (targetUrl.startsWith(window.location.origin)) {
+                    e.preventDefault();
+                    navigateToPage(this.href);
+                }
+            });
+        }
+    });
+
+    // Handle page load transition for initial page load
+    handlePageLoadTransition();
 
     // Lightbox functionality - Add null checks
     const lightbox = document.querySelector('.lightbox');

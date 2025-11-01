@@ -1,5 +1,14 @@
 {
+  "name": "kadri24digits",
+  "version": "1.0.0",
+  "description": "kadri24digits website with smooth page transitions",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve -l 3000 ."
+  },
   "dependencies": {
-    "lenis": "^1.3.8"
+    "lenis": "^1.3.8",
+    "serve": "^14.2.1"
   }
 }
