@@ -84,30 +84,28 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add resize handler to prevent animation during window resizing
         let resizeTimer;
         window.addEventListener('resize', function() {
-            // Immediately close mobile menu if it's open during resize
+            // Close mobile menu only if it's open during resize
             if (navLinks.classList.contains('active')) {
                 navLinks.classList.remove('active');
                 hamburger.classList.remove('active');
                 overlay.classList.remove('active');
             }
-            
+
             // Add the no-transition class to all relevant elements
+            document.body.classList.add('no-transition');
             navLinks.classList.add('no-transition');
             overlay.classList.add('no-transition');
             hamburger.classList.add('no-transition');
-            
-            // Also add to document body to prevent any inherited transitions
-            document.body.classList.add('no-transition');
-            
+
             // Clear the existing timer
             clearTimeout(resizeTimer);
-            
+
             // Set a timer to remove the no-transition class after resize is complete
             resizeTimer = setTimeout(function() {
+                document.body.classList.remove('no-transition');
                 navLinks.classList.remove('no-transition');
                 overlay.classList.remove('no-transition');
                 hamburger.classList.remove('no-transition');
-                document.body.classList.remove('no-transition');
             }, 100);
         });
 
@@ -124,22 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Close menu when link is clicked
-        links.forEach(link => {
-            link.addEventListener('click', () => {
-                // Remove animation when closing for instant hide
-                links.forEach((l) => {
-                    l.style.animation = '';
-                });
-                navLinks.classList.remove('active');
-                hamburger.classList.remove('active');
-                overlay.classList.remove('active');
-            });
-        });
-
-        // Close menu when clicking a link
+        // Close menu when a link is clicked
         document.querySelectorAll('.nav-links a').forEach(link => {
-<<<<<<< HEAD
             link.addEventListener('click', function(e) {
                 // Get the href and check if it's an internal navigation link
                 const href = this.getAttribute('href');
@@ -164,16 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     navigateToPage(this.href);
                 }
-=======
-            link.addEventListener('click', () => {
-                // Remove animation when closing for instant hide
-                links.forEach((l) => {
-                    l.style.animation = '';
-                });
-                hamburger.classList.remove('active');
-                navLinks.classList.remove('active');
-                overlay.classList.remove('active');
->>>>>>> parent of 2746bbd (Update branding and footer across site)
             });
         });
 
@@ -240,8 +214,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Don't handle browser back/forward button navigation with animation
-    // Only animate when user clicks navigation buttons
+    // Handle pageshow event to properly manage browser back/forward navigation
+    window.addEventListener('pageshow', function(event) {
+        // If the page is restored from bfcache, reset the transition overlay
+        if (event.persisted) {
+            const pageTransitionOverlay = document.querySelector('.transition-overlay');
+            if (pageTransitionOverlay) {
+                // Reset overlay state when restored from bfcache
+                pageTransitionOverlay.classList.remove('active', 'fade-out');
+            }
+        }
+    });
 
     // Handle all navigation links with transition - including relative paths
     document.querySelectorAll('a[href]').forEach(link => {
