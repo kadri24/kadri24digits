@@ -27,23 +27,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 0);
     }
 
-    // Create transition overlay with dynamic path resolution
+    // Create transition overlay with absolute path for logo
     const transitionOverlay = document.createElement('div');
     transitionOverlay.className = 'transition-overlay';
     
-    // Determine the base path based on the current URL
-    const currentPath = window.location.pathname;
-    const pathParts = currentPath.split('/');
-    let logoPath = 'assets/images/logokadri.png'; // Default path for root
-    
-    // If we're in a subdirectory, adjust the path
-    if (pathParts.length > 2) { // If we're not in the root directory
-        const depth = pathParts.length - 2; // How many levels deep we are
-        logoPath = '../'.repeat(depth - 1) + 'assets/images/logokadri.png';
-    }
-    
+    // Use absolute path to ensure logo loads from any subdirectory
     transitionOverlay.innerHTML = `
-        <img src="${logoPath}" alt="kadri24digits" class="transition-logo">
+        <img src="/assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
     `;
     document.body.appendChild(transitionOverlay);
 
@@ -135,7 +125,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     !href.startsWith('#') && 
                     !href.startsWith('mailto:') && 
                     !href.startsWith('tel:') && 
-                    !this.hasAttribute('download')) {
+                    !this.hasAttribute('download') &&
+                    !href.endsWith('.pdf') &&  // Exclude PDF files
+                    !href.endsWith('.zip') &&  // Exclude ZIP files
+                    !href.endsWith('.exe')) {  // Exclude executable files
                     
                     e.preventDefault();
                     
@@ -167,36 +160,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle all navigation links with transition
     function navigateToPage(url) {
-        isPageTransitioning = true;
-        
         // Show the transition overlay
         transitionOverlay.classList.add('active');
         
-        // Wait for the background to fade in completely, then allow time for the logo to appear
+        // Wait for the background to fade in and logo to appear before redirecting
         setTimeout(() => {
-            // Redirect after the background appears but allow time for the logo to appear
+            // Redirect after the transition begins
             window.location.href = url;
-        }, 200); // Wait for background to show and allow logo to appear
+        }, 150); // Reduced delay for better user experience
     }
 
     // Handle the page loading transition
     function handlePageLoadTransition() {
-        const currentPath = window.location.pathname;
-        const pathParts = currentPath.split('/');
-        let logoPath = 'assets/images/logokadri.png'; // Default path for root
-        
-        // If we're in a subdirectory, adjust the path
-        if (pathParts.length > 2) { // If we're not in the root directory
-            const depth = pathParts.length - 2; // How many levels deep we are
-            logoPath = '../'.repeat(depth - 1) + 'assets/images/logokadri.png';
-        }
-
         // Add transition overlay to the DOM if not already present
         if (!document.querySelector('.transition-overlay')) {
             const overlay = document.createElement('div');
             overlay.className = 'transition-overlay';
             overlay.innerHTML = `
-                <img src="${logoPath}" alt="kadri24digits" class="transition-logo">
+                <img src="/assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
             `;
             document.body.appendChild(overlay);
         }
@@ -209,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // When the page is fully loaded, play the exit animation
             window.addEventListener('load', function() {
                 // Wait for the logo to be fully visible before starting to fade out
-                // CSS transition for logo is 0.6s with 0.1s delay, so we wait 0.7s to be sure
                 setTimeout(() => {
                     // Start fade out of the logo
                     pageTransitionOverlay.classList.add('fade-out');
@@ -218,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         pageTransitionOverlay.classList.remove('active', 'fade-out');
                     }, 400); // Match the CSS transition duration
-                }, 700); // Delay before starting fade out (logo transition time + small buffer)
+                }, 700); // Delay before starting fade out (logo transition time + buffer)
             });
         }
     }
@@ -226,18 +206,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // State to track page transitions
     let isPageTransitioning = false;
 
-    // Handle browser back/forward button navigation
+    // Handle browser back/forward button navigation properly
     window.addEventListener('popstate', function(event) {
-        if (!isPageTransitioning) {
-            // Show the transition overlay when the browser back/forward button is used
-            transitionOverlay.classList.add('active');
+        // Add the transition effect when navigating with browser back/forward
+        const overlay = document.querySelector('.transition-overlay');
+        if (overlay) {
+            overlay.classList.add('active');
             
-            // Allow a moment for the transition to show, then let the page change
+            // Remove the overlay after some time to allow for smooth transition
             setTimeout(() => {
-                // Since we're using actual page navigation, we can't prevent the popstate
-                // So we'll just ensure the transition happens properly
-                window.location.reload();
-            }, 150); // Wait for transition to start
+                overlay.classList.remove('active');
+            }, 500);
         }
     });
 
@@ -250,14 +229,15 @@ document.addEventListener('DOMContentLoaded', function() {
             !href.startsWith('#') && 
             !href.startsWith('mailto:') && 
             !href.startsWith('tel:') && 
-            !link.hasAttribute('download')) {
+            !link.hasAttribute('download') && 
+            !href.endsWith('.pdf') &&  // Exclude PDF files
+            !href.endsWith('.zip') &&  // Exclude ZIP files
+            !href.endsWith('.exe')) {  // Exclude executable files
             
             link.addEventListener('click', function(e) {
-                // Get the full URL for the target
-                const targetUrl = new URL(this.href, window.location.origin).href;
-                
-                // Only handle if it's an internal link
-                if (targetUrl.startsWith(window.location.origin)) {
+                // Check if it's an internal page link by verifying it doesn't have file extensions
+                if (!this.href.includes('.html') && !this.href.includes('.pdf') && 
+                    !this.href.includes('.zip') && !this.href.includes('.exe')) {
                     e.preventDefault();
                     navigateToPage(this.href);
                 }
