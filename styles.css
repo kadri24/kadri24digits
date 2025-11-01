@@ -31,7 +31,10 @@ html.lenis {
 }
 
 /* Add no-transition class to disable animations */
-.no-transition {
+.no-transition,
+.no-transition *,
+.no-transition *::before,
+.no-transition *::after {
     -webkit-transition: none !important;
     -moz-transition: none !important;
     -ms-transition: none !important;

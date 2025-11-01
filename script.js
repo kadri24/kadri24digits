@@ -66,13 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add the no-transition class
             navLinks.classList.add('no-transition');
             overlay.classList.add('no-transition');
-            
-            // If window is smaller than 768px and menu is active, close it without animation
-            if (window.innerWidth <= 768 && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                hamburger.classList.remove('active');
-                overlay.classList.remove('active');
-            }
+            hamburger.classList.add('no-transition');
             
             // Clear the existing timer
             clearTimeout(resizeTimer);
@@ -81,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
             resizeTimer = setTimeout(function() {
                 navLinks.classList.remove('no-transition');
                 overlay.classList.remove('no-transition');
+                hamburger.classList.remove('no-transition');
             }, 100);
         });
 
