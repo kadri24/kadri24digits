@@ -640,13 +640,9 @@ main, .main {
 .transition-logo {
     width: 120px;
     height: 120px;
-    opacity: 0;
-    transition: opacity 0.6s ease-in-out 0.1s; /* Delay the logo appearance slightly */
-    z-index: 100000;
-}
-
-.transition-overlay.active .transition-logo {
     opacity: 1;
+    transition: opacity 0.6s ease-in-out;
+    z-index: 100000;
 }
 
 .transition-overlay.fade-out .transition-logo {

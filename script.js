@@ -12,6 +12,14 @@ function raf(time) {
 requestAnimationFrame(raf);
 
 
+// Create transition overlay immediately when script loads
+const transitionOverlay = document.createElement('div');
+transitionOverlay.className = 'transition-overlay active';
+transitionOverlay.innerHTML = `
+    <img src="/assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
+`;
+document.body.appendChild(transitionOverlay);
+
 document.addEventListener('DOMContentLoaded', function() {
     // Add scrollbar width calculation at the start
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
@@ -26,9 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
             background.classList.add('blurred');
         }, 0);
     }
-
-    // Create or get the transition overlay with absolute path for logo
-    let transitionOverlay = document.querySelector('.transition-overlay');
     
     if (!transitionOverlay) {
         transitionOverlay = document.createElement('div');
@@ -39,9 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
             <img src="/assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
         `;
         document.body.appendChild(transitionOverlay);
-    } else {
-        // If overlay already exists (e.g. from browser back), reset it
-        transitionOverlay.classList.remove('active', 'fade-out');
     }
 
     // Hamburger menu
