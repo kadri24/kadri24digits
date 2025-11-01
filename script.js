@@ -71,6 +71,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // Also add to document body to prevent any inherited transitions
             document.body.classList.add('no-transition');
             
+            // Ensure mobile menu stays closed during resize
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+            
             // Clear the existing timer
             clearTimeout(resizeTimer);
             
