@@ -30,12 +30,14 @@ body.lightbox-open {
 
 .game-hero {
     position: relative;
-    min-height: 80vh;
+    height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 80px 20px;
+    padding: 20px;
+    padding-top: 64px; /* Add padding to account for navbar */
+    margin-top: -44px; /* Offset the header height */
 }
 
 .game-background {
@@ -98,11 +100,11 @@ body.lightbox-open {
 }
 
 .game-info-section {
-    background: none;
-    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 30px;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .game-description, .game-features, .game-story, .game-gameplay {
@@ -330,14 +332,14 @@ body.lightbox-open {
 
 @media (max-width: 768px) {
     .game-title {
-        font-size: clamp(2rem, 5vw, 3.8rem); /* More responsive font sizing */
+        font-size: clamp(1.8rem, 8vw, 2.5rem); /* More responsive font sizing */
         white-space: normal; /* Allow line breaks on mobile */
         margin-bottom: 1.2rem;
     }
 
     .game-hero {
-        min-height: 100vh; /* Shorter height on mobile */
-        padding: 120px 20px;
+        height: 50vh; /* Shorter height on mobile */
+        padding-top: 54px; /* Slightly less padding on mobile */
     }
 
     .gallery-grid {
@@ -357,11 +359,11 @@ body.lightbox-open {
 
     .play-button {
         padding: 12px 30px;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
 
     .game-content {
-        padding: 35px 25px;
+        padding: 30px 20px;
         min-width: unset; /* Remove minimum width on mobile */
         width: 95%;
         max-width: 95%;

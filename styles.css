@@ -394,10 +394,14 @@ main, .main {
 .footer {
     position: relative;
     padding: 20px 0;
-    background: #f0f0f0;
-    /* backdrop-filter: blur(1vh);
-    -webkit-backdrop-filter: blur(1vh); */
-    border-top: none;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.05)
+    );
+    backdrop-filter: blur(1vh);
+    -webkit-backdrop-filter: blur(1vh);
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .footer-content {
@@ -460,7 +464,6 @@ main, .main {
         top: 44px;
         opacity: 1;
         max-height: calc(100vh - 44px);
-        overflow-y: auto;
         pointer-events: all; /* Enable interaction when open */
         visibility: visible; /* Make visible to screen readers and clicks */
     }
@@ -530,7 +533,6 @@ main, .main {
 
     .main {
         min-height: 100vh;
-        margin-top: 0;
     }
 
     .featured-section {
@@ -559,6 +561,7 @@ main, .main {
     .footer p {
         font-size: 12px;
     }
+<<<<<<< HEAD
 }
 
 .footer-container {
@@ -651,4 +654,6 @@ main, .main {
 
 .transition-overlay.fade-out .transition-logo {
     opacity: 0;
+=======
+>>>>>>> parent of 2746bbd (Update branding and footer across site)
 }
