@@ -41,14 +41,18 @@ document.addEventListener('DOMContentLoaded', function() {
             hamburger.classList.toggle('active');
             overlay.classList.toggle('active');
 
-            // Animate Links
-            links.forEach((link, index) => {
-                if (link.style.animation) {
-                    link.style.animation = '';
-                } else {
+            // Animate Links only when opening, not closing
+            if (navLinks.classList.contains('active')) {
+                // Animate Links when opening
+                links.forEach((link, index) => {
                     link.style.animation = `navLinkFade 0.5s ease forwards ${index / 7 + 0.3}s`;
-                }
-            });
+                });
+            } else {
+                // Remove animation when closing for instant hide
+                links.forEach((link) => {
+                    link.style.animation = '';
+                });
+            }
         });
 
         // Add transitionend listener to overlay to remove animation class
@@ -63,6 +67,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add resize handler to prevent animation during window resizing
         let resizeTimer;
         window.addEventListener('resize', function() {
+            // Immediately close mobile menu if it's open during resize
+            if (navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+            
             // Add the no-transition class to all relevant elements
             navLinks.classList.add('no-transition');
             overlay.classList.add('no-transition');
@@ -70,13 +81,6 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Also add to document body to prevent any inherited transitions
             document.body.classList.add('no-transition');
-            
-            // Ensure mobile menu stays closed during resize
-            if (navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                hamburger.classList.remove('active');
-                overlay.classList.remove('active');
-            }
             
             // Clear the existing timer
             clearTimeout(resizeTimer);
@@ -93,6 +97,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Close menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!navLinks.contains(e.target) && !hamburger.contains(e.target) && navLinks.classList.contains('active')) {
+                // Remove animation when closing for instant hide
+                links.forEach((link) => {
+                    link.style.animation = '';
+                });
                 navLinks.classList.remove('active');
                 hamburger.classList.remove('active');
                 overlay.classList.remove('active');
@@ -102,6 +110,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Close menu when link is clicked
         links.forEach(link => {
             link.addEventListener('click', () => {
+                // Remove animation when closing for instant hide
+                links.forEach((l) => {
+                    l.style.animation = '';
+                });
                 navLinks.classList.remove('active');
                 hamburger.classList.remove('active');
                 overlay.classList.remove('active');
@@ -111,6 +123,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Close menu when clicking a link
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
+                // Remove animation when closing for instant hide
+                links.forEach((l) => {
+                    l.style.animation = '';
+                });
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('active');
                 overlay.classList.remove('active');
@@ -120,6 +136,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Handle overlay click to close menu
         overlay.addEventListener('click', () => {
             if (navLinks.classList.contains('active')) {
+                // Remove animation when closing for instant hide
+                links.forEach((link) => {
+                    link.style.animation = '';
+                });
                 navLinks.classList.remove('active');
                 hamburger.classList.remove('active');
                 overlay.classList.remove('active');
