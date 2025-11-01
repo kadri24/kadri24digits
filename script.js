@@ -27,15 +27,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 0);
     }
 
-    // Create transition overlay with absolute path for logo
-    const transitionOverlay = document.createElement('div');
-    transitionOverlay.className = 'transition-overlay';
+    // Create or get the transition overlay with absolute path for logo
+    let transitionOverlay = document.querySelector('.transition-overlay');
     
-    // Use absolute path to ensure logo loads from any subdirectory
-    transitionOverlay.innerHTML = `
-        <img src="/assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
-    `;
-    document.body.appendChild(transitionOverlay);
+    if (!transitionOverlay) {
+        transitionOverlay = document.createElement('div');
+        transitionOverlay.className = 'transition-overlay';
+        
+        // Use absolute path to ensure logo loads from any subdirectory
+        transitionOverlay.innerHTML = `
+            <img src="/assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
+        `;
+        document.body.appendChild(transitionOverlay);
+    } else {
+        // If overlay already exists (e.g. from browser back), reset it
+        transitionOverlay.classList.remove('active', 'fade-out');
+    }
 
     // Hamburger menu
     const hamburger = document.querySelector('.hamburger');
@@ -200,6 +207,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         }, 400); // Match the CSS transition duration
                     }, 500); // Delay before starting fade out to ensure logo is visible
                 });
+            } else {
+                // For direct page visits or browser back/forward, just make sure overlay is hidden
+                pageTransitionOverlay.classList.remove('active', 'fade-out');
             }
         }
     }
