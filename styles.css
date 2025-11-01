@@ -42,6 +42,16 @@ html.lenis {
     transition: none !important;
 }
 
+body.no-transition .nav-links,
+body.no-transition .overlay,
+body.no-transition .hamburger {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+}
+
 /* Fix overlay to cover entire page when scrolling */
 .overlay {
     position: fixed;

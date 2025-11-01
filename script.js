@@ -63,10 +63,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add resize handler to prevent animation during window resizing
         let resizeTimer;
         window.addEventListener('resize', function() {
-            // Add the no-transition class
+            // Add the no-transition class to all relevant elements
             navLinks.classList.add('no-transition');
             overlay.classList.add('no-transition');
             hamburger.classList.add('no-transition');
+            
+            // Also add to document body to prevent any inherited transitions
+            document.body.classList.add('no-transition');
             
             // Clear the existing timer
             clearTimeout(resizeTimer);
@@ -76,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 navLinks.classList.remove('no-transition');
                 overlay.classList.remove('no-transition');
                 hamburger.classList.remove('no-transition');
+                document.body.classList.remove('no-transition');
             }, 100);
         });
 
