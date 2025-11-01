@@ -27,11 +27,23 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 0);
     }
 
-    // Create transition overlay
+    // Create transition overlay with dynamic path resolution
     const transitionOverlay = document.createElement('div');
     transitionOverlay.className = 'transition-overlay';
+    
+    // Determine the base path based on the current URL
+    const currentPath = window.location.pathname;
+    const pathParts = currentPath.split('/');
+    let logoPath = 'assets/images/logokadri.png'; // Default path for root
+    
+    // If we're in a subdirectory, adjust the path
+    if (pathParts.length > 2) { // If we're not in the root directory
+        const depth = pathParts.length - 2; // How many levels deep we are
+        logoPath = '../'.repeat(depth - 1) + 'assets/images/logokadri.png';
+    }
+    
     transitionOverlay.innerHTML = `
-        <img src="assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
+        <img src="${logoPath}" alt="kadri24digits" class="transition-logo">
     `;
     document.body.appendChild(transitionOverlay);
 
@@ -155,24 +167,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle all navigation links with transition
     function navigateToPage(url) {
+        isPageTransitioning = true;
+        
         // Show the transition overlay
         transitionOverlay.classList.add('active');
         
-        // Wait for the background to fade in completely, then the logo
+        // Wait for the background to fade in completely, then allow time for the logo to appear
         setTimeout(() => {
-            // Redirect after the background appears but before the logo fully appears
+            // Redirect after the background appears but allow time for the logo to appear
             window.location.href = url;
-        }, 300); // Wait for background to show (150ms) and some extra time for logo to appear
+        }, 200); // Wait for background to show and allow logo to appear
     }
 
     // Handle the page loading transition
     function handlePageLoadTransition() {
+        const currentPath = window.location.pathname;
+        const pathParts = currentPath.split('/');
+        let logoPath = 'assets/images/logokadri.png'; // Default path for root
+        
+        // If we're in a subdirectory, adjust the path
+        if (pathParts.length > 2) { // If we're not in the root directory
+            const depth = pathParts.length - 2; // How many levels deep we are
+            logoPath = '../'.repeat(depth - 1) + 'assets/images/logokadri.png';
+        }
+
         // Add transition overlay to the DOM if not already present
         if (!document.querySelector('.transition-overlay')) {
             const overlay = document.createElement('div');
             overlay.className = 'transition-overlay';
             overlay.innerHTML = `
-                <img src="assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
+                <img src="${logoPath}" alt="kadri24digits" class="transition-logo">
             `;
             document.body.appendChild(overlay);
         }
@@ -185,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // When the page is fully loaded, play the exit animation
             window.addEventListener('load', function() {
                 // Wait for the logo to be fully visible before starting to fade out
+                // CSS transition for logo is 0.6s with 0.1s delay, so we wait 0.7s to be sure
                 setTimeout(() => {
                     // Start fade out of the logo
                     pageTransitionOverlay.classList.add('fade-out');
@@ -192,11 +217,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Remove the overlay after the fade out animation completes
                     setTimeout(() => {
                         pageTransitionOverlay.classList.remove('active', 'fade-out');
-                    }, 500); // Match the CSS transition duration
-                }, 300); // Delay before starting fade out
+                    }, 400); // Match the CSS transition duration
+                }, 700); // Delay before starting fade out (logo transition time + small buffer)
             });
         }
     }
+
+    // State to track page transitions
+    let isPageTransitioning = false;
+
+    // Handle browser back/forward button navigation
+    window.addEventListener('popstate', function(event) {
+        if (!isPageTransitioning) {
+            // Show the transition overlay when the browser back/forward button is used
+            transitionOverlay.classList.add('active');
+            
+            // Allow a moment for the transition to show, then let the page change
+            setTimeout(() => {
+                // Since we're using actual page navigation, we can't prevent the popstate
+                // So we'll just ensure the transition happens properly
+                window.location.reload();
+            }, 150); // Wait for transition to start
+        }
+    });
 
     // Handle all navigation links with transition - including relative paths
     document.querySelectorAll('a[href]').forEach(link => {
