@@ -175,11 +175,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show the transition overlay
         transitionOverlay.classList.add('active');
         
-        // Wait for the background to fade in and logo to appear before redirecting
+        // Wait for overlay and logo to be fully visible before starting fade out
         setTimeout(() => {
-            // Redirect after the transition begins
+            // Redirect after the full animation duration (400ms) plus a small buffer (100ms)
             window.location.href = url;
-        }, 150); // Reduced delay for better user experience
+        }, 500); // Match the CSS transition duration plus buffer
     }
 
     // Handle the page loading transition
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         // Remove the overlay after the fade out animation completes
                         setTimeout(() => {
                             pageTransitionOverlay.classList.remove('active', 'fade-out');
-                        }, 400); // Match the CSS transition duration
+                        }, 500); // Match the CSS transition duration plus buffer
                     }, 500); // Delay before starting fade out to ensure logo is visible
                 });
             } else {
