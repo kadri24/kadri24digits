@@ -214,8 +214,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Don't handle browser back/forward button navigation with animation
-    // Only animate when user clicks navigation buttons
+    // Handle pageshow event to properly manage browser back/forward navigation
+    window.addEventListener('pageshow', function(event) {
+        // If the page is restored from bfcache, reset the transition overlay
+        if (event.persisted) {
+            const pageTransitionOverlay = document.querySelector('.transition-overlay');
+            if (pageTransitionOverlay) {
+                // Reset overlay state when restored from bfcache
+                pageTransitionOverlay.classList.remove('active', 'fade-out');
+            }
+        }
+    });
 
     // Handle all navigation links with transition - including relative paths
     document.querySelectorAll('a[href]').forEach(link => {
