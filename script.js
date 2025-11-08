@@ -316,8 +316,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Force reflow before adding transitions
                 lightboxImg.offsetHeight;
-                
-                document.body.style.paddingRight = '12px';
                 document.body.classList.add('lightbox-open');
 
                 // Clean up old handler and create new one
@@ -368,7 +366,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     currentAnimation.push(setTimeout(() => {
                         window.removeEventListener('resize', window.lightboxResizeHandler);
                         document.body.classList.remove('lightbox-open');
-                        document.body.style.paddingRight = '';
                         lightboxImg.removeAttribute('style');
                         lightboxImg.src = '';
                         lightboxImg.style.display = 'none';
