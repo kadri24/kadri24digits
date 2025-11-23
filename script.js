@@ -12,13 +12,6 @@ function raf(time) {
 requestAnimationFrame(raf);
 
 
-// Create transition overlay immediately when script loads
-const transitionOverlay = document.createElement('div');
-transitionOverlay.className = 'transition-overlay active';
-transitionOverlay.innerHTML = `
-    <img src="/assets/images/logokadri.png" alt="kadri24digits" class="transition-logo">
-`;
-document.body.appendChild(transitionOverlay);
 
 document.addEventListener('DOMContentLoaded', function() {
     // Add scrollbar width calculation at the start
@@ -139,16 +132,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     !href.endsWith('.zip') &&  // Exclude ZIP files
                     !href.endsWith('.exe')) {  // Exclude executable files
                     
-                    e.preventDefault();
-                    
                     if (navLinks.classList.contains('active')) {
                         links.forEach(l => l.style.animation = '');
                         hamburger.classList.remove('active');
                         navLinks.classList.remove('active');
                         overlay.classList.remove('active');
                     }
-                    
-                    navigateToPage(this.href);
                 }
             });
         });
@@ -168,63 +157,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Handle all navigation links with transition
-    function navigateToPage(url) {
-        // Set flag to indicate we're navigating
-        sessionStorage.setItem('isNavigating', 'true');
-        
-        // Show the transition overlay
-        transitionOverlay.classList.add('active');
-        
-        // Wait for overlay and logo to be fully visible before starting fade out
-        setTimeout(() => {
-            // Redirect after the full animation duration (400ms) plus a small buffer (100ms)
-            window.location.href = url;
-        }, 500); // Match the CSS transition duration plus buffer
-    }
 
-    // Handle the page loading transition
-    function handlePageLoadTransition() {
-        const pageTransitionOverlay = document.querySelector('.transition-overlay');
-        if (pageTransitionOverlay) {
-            // Check if this page load was from a navigation event (not direct visit)
-            const isNavigating = sessionStorage.getItem('isNavigating');
-            
-            if (isNavigating === 'true') {
-                // This is a navigation from another page, show the transition
-                pageTransitionOverlay.classList.add('active');
-                
-                // Mark that we're no longer navigating
-                sessionStorage.setItem('isNavigating', 'false');
-                
-                // When the page is fully loaded, fade out the transition overlay
-                window.addEventListener('load', function() {
-                    // Wait for the logo to be fully visible before starting to fade out
-                    setTimeout(() => {
-                        // Start fade out of the logo and background
-                        pageTransitionOverlay.classList.add('fade-out');
-                        
-                        // Remove the overlay after the fade out animation completes
-                        setTimeout(() => {
-                            pageTransitionOverlay.classList.remove('active', 'fade-out');
-                        }, 500); // Match the CSS transition duration plus buffer
-                    }, 500); // Delay before starting fade out to ensure logo is visible
-                });
-            } else {
-                // For direct page visits or browser back/forward, just make sure overlay is hidden
-                pageTransitionOverlay.classList.remove('active', 'fade-out');
-            }
-        }
-    }
 
     // Handle pageshow event to properly manage browser back/forward navigation
     window.addEventListener('pageshow', function(event) {
-        // If the page is restored from bfcache, reset the transition overlay
+        // If the page is restored from bfcache
         if (event.persisted) {
-            const pageTransitionOverlay = document.querySelector('.transition-overlay');
-            if (pageTransitionOverlay) {
-                // Reset overlay state when restored from bfcache
-                pageTransitionOverlay.classList.remove('active', 'fade-out');
-            }
+            // Handle page restoration if needed
         }
     });
 
@@ -244,17 +183,14 @@ document.addEventListener('DOMContentLoaded', function() {
             
             link.addEventListener('click', function(e) {
                 // Check if it's an internal page link by verifying it doesn't have file extensions
-                if (!this.href.includes('.html') && !this.href.includes('.pdf') && 
+                if (!this.href.includes('.html') && !this.href.includes('.pdf') &&
                     !this.href.includes('.zip') && !this.href.includes('.exe')) {
-                    e.preventDefault();
-                    navigateToPage(this.href);
+                    // Allow default navigation behavior
                 }
             });
         }
     });
 
-    // Handle page load transition for initial page load
-    handlePageLoadTransition();
 
     // Lightbox functionality - Add null checks
     const lightbox = document.querySelector('.lightbox');
