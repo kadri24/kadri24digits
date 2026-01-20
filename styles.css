@@ -1,611 +1,322 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Lenis scroll container */
-html.lenis {
-    height: auto;
+html, body {
+    height: 100%;
 }
 
-.lenis.lenis-smooth {
-    scroll-behavior: auto;
+html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
 }
 
-.lenis.lenis-smooth [data-lenis-prevent] {
-    overscroll-behavior: contain;
+body {
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
 }
 
-.lenis.lenis-stopped {
-    overflow: hidden;
-}
-
-.lenis.lenis-scrolling iframe {
-    pointer-events: none;
-}
-
-
-:root {
-    --scrollbar-width: 0px;
-}
-
-/* Add no-transition class to disable animations */
-.no-transition,
-.no-transition *,
-.no-transition *::before,
-.no-transition *::after {
-    -webkit-transition: none !important;
-    -moz-transition: none !important;
-    -ms-transition: none !important;
-    -o-transition: none !important;
-    transition: none !important;
-}
-
-body.no-transition .nav-links,
-body.no-transition .overlay,
-body.no-transition .hamburger {
-    -webkit-transition: none !important;
-    -moz-transition: none !important;
-    -ms-transition: none !important;
-    -o-transition: none !important;
-    transition: none !important;
-}
-
-/* Fix overlay to cover entire page when scrolling */
-.overlay {
+/* Navbar Styles */
+.navbar {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Dark background */
-    z-index: 997; /* Below navbar but above other content */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s linear, visibility 0.3s linear; /* Linear transition */
-    pointer-events: none; /* Allow clicks to pass through when hidden */
-}
-
-.overlay.active {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto; /* Capture clicks when visible */
-}
-
-html {
-    overflow-y: scroll; /* Always show scrollbar */
-}
-
-body {
-    font-family: 'Inter', serif;
-    min-height: 100vh;
-    width: calc(100vw - var(--scrollbar-width)); /* Account for scrollbar */
-    overflow-x: hidden;
-    padding-right: var(--scrollbar-width);
-    padding-top: 0; /* Remove any padding-top if it exists */
-}
-
-/* Webkit scrollbar styles */
-::-webkit-scrollbar {
-    width: 8px;
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-}
-
-html {
     width: 100vw;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    --scrollbar-width: 12px;
-}
-
-body {
-    position: relative;
-    width: 100%;
-    overflow-x: hidden;
-    padding-right: var(--scrollbar-width);
-    margin-right: calc(var(--scrollbar-width) * -1);
-}
-
-* {
+    background: transparent;
+    z-index: 1000;
+    padding: 16px;
+    max-width: 100%;
+    will-change: transform;
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    /*scrollbar-width: thin;
-    scrollbar-color: rgb(192, 192, 192) rgba(168, 168, 168, 0); */
-}
-
-html,
-body {
-    font-family: 'Inter', serif;
-    height: 100%;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-::-webkit-scrollbar {
-    width: 12px;  /* for vertical scrollbars */
-    height: 12px; /* for horizontal scrollbars */
-}
-
-::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.header {
-    background-color: #fff;
-    border-bottom: 1px solid #d2d2d2;
-    height: 44px;
-    box-shadow: 0 0px 25px rgba(0, 0, 0, 0.5);
-    position: absolute; /* Change from relative to absolute */
-    width: 100vw; /* Full viewport width */
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    right: 0;
-}
-
-/* Add padding to compensate for fixed header */
-main, .main {
-    padding-top: 0; /* Remove the padding that was compensating for fixed header */
-    margin-top: 44px; /* Add margin to account for header height */
 }
 
 .nav-container {
-    max-width: 980px;
-    margin: 0 auto;
     display: flex;
+    justify-content: flex-end;
     align-items: center;
-    height: 100%;
-    justify-content: center;
-    padding: 0 20px;
-}
-
-.nav-links {
-    display: flex;
-    list-style: none;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    margin: 0 auto;
-    padding: 0;
-}
-
-.nav-links li {
-    margin: 0 8px;
-}
-
-.nav-links a {
-    font-size: 14px;
-    color: #1a1a1a;
-    text-decoration: none;
-    line-height: 44px;
-    padding: 0 4px;
-    transition: color 0.2s ease;
-    font-weight: 500;
-}
-
-.nav-links a:hover {
-    color: #444;
-}
-
-.logo-item {
-    margin-right: 20px;
-}
-
-.main {
-    position: relative;
     width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    max-width: 100vw;
+    padding: 0 20px;
+    margin: 0 auto;
 }
 
-.background {
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 50px);
-    height: calc(100% + 50px);
-    background-image: url("assets/images/eyeshorror.png");
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    z-index: -1;
-    transition: filter 1s ease-in-out;
-}
-
-.background.blurred {
-    filter: blur(1vh);
-}
-
-.logo-link {
+.nav-menu {
     display: flex;
     align-items: center;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
+    gap: 10px;
 }
 
-.logo-link:hover {
-    opacity: 0.8;
-}
-
-.logo {
-    height: 30px;
-    display: flex;
-    align-items: center;
-}
-
-.content {
-    z-index: 1;
-}
-
-.title {
-    color: #ffffff;
-    font-size: 48px;
-    text-align: center;
-    font-weight: 800;
-    margin-bottom: 2rem;
-    text-shadow: none;
-}
-
-.hamburger {
-    display: none;
-    background: none;
+.games-button, .contact-button {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: rgb(205, 205, 205);
+    background: transparent;
     border: none;
+    padding: 8px 16px;
     cursor: pointer;
-    padding: 0;
-    z-index: 1001;
-}
-
-.bar {
-    display: block;
-    width: 25px;
-    height: 3px;
-    margin: 5px auto;
-    background-color: #000;
-    transition: all 0.3s ease-in-out;
-}
-
-.featured-section {
-    position: relative;
-    min-height: 400px;
-    background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.1),
-        rgba(255, 255, 255, 0.05)
-    );
-    backdrop-filter: blur(1vh);
-    -webkit-backdrop-filter: blur(1vh);
-    padding: 30px 0 40px;
-    overflow-y: auto;
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
-
-.featured-games {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    max-width: 1200px;
-    padding: 0 20px;
-    margin: 0 auto;
-}
-
-.game-card {
-    background: rgba(255, 255, 255, 0.07);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 15px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    text-decoration: none; /* Added to remove link underline */
-    display: block; /* Added to make full card clickable */
-}
-
-.game-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.game-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-    filter: brightness(0.95);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.game-card:hover img {
-    transform: scale(1.05);
-    filter: brightness(1.05);
-}
-
-.game-info {
-    padding: 20px;
-    background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.1),
-        rgba(255, 255, 255, 0.05)
-    );
-    text-align: center;
-}
-
-.game-info h3 {
-    color: #1a1a1a;
-    font-size: 1.2rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    margin: 0;
-    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
     transition: color 0.3s ease;
 }
 
-.game-card:hover .game-info h3 {
-    color: #000000;
+.games-button:hover, .contact-button:hover {
+    color: rgb(255, 255, 255);
 }
 
-.section-title {
-    color: #1a1a1a;
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 30px;
-    text-shadow: 0 2px 8px rgba(255, 255, 255, 0.3);
-    letter-spacing: 1px;
+.hero-section {
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     position: relative;
-    font-weight: 700;
+    z-index: 1;
+    overflow: hidden;
+    width: 100vw;
+    max-width: 100%;
+    will-change: transform;
 }
 
-.section-title::after {
+.hero-background {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background-image: url('./assets/images/background.png');
+    background-size: cover;
+    background-position: center center;
+    -webkit-filter: blur(5px);
+    filter: blur(5px);
+    z-index: -2;
+}
+
+.hero-section::before {
     content: '';
     position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 2px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.5),
-        transparent
-    );
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 15%, rgba(0, 0, 0, 0.2) 50%, rgba(0, 0, 0, 0.85) 85%, rgba(0, 0, 0, 0.95) 100%);
+    z-index: -1;
 }
 
-.footer {
+.hero-section h1 {
+    color: white;
+    font-size: 72px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 400;
+    z-index: 1;
+    font-family: 'Instrument Serif', serif;
+    font-weight: normal;
+}
+
+.hero-section .subtitle {
+    color: white;
+    font-size: 22px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+}
+
+.games-section {
+    width: 100vw;
+    background-color: #000;
     position: relative;
-    padding: 20px 0;
-    background: #f0f0f0;
-    /* backdrop-filter: blur(1vh);
-    -webkit-backdrop-filter: blur(1vh); */
-    border-top: none;
+    z-index: 2;
+    padding: 60px 0;
+    max-width: 100%;
 }
 
-.footer-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
+.games-section h2 {
+    color: white;
+    font-size: 48px;
     text-align: center;
+    font-family: 'Instrument Serif', serif;
+    font-weight: normal;
+    margin: 0 0 60px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.footer p {
-    color: #1a1a1a;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.2);
-}
-
-.mobile-logo {
-    display: none;
-}
-
-.desktop-nav .logo-item {
-    margin-right: 20px;
-}
-
-@media (max-width: 768px) {
-    .hamburger {
-        display: block;
-    }
-
-    .nav-container {
-        justify-content: space-between;
-    }
-
-    .nav-links {
-        position: absolute;
-        top: -100%;
-        left: 0;
-        flex-direction: column;
-        background-color: #fff;
-        width: 100%;
-        height: auto;
-        max-height: 400px;
-        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        padding: 30px 35px 25px 35px;
-        align-items: flex-start;
-        justify-content: flex-start;
-        transform-origin: top;
-        opacity: 0;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        z-index: 999;
-        margin: 0;
-        overflow-y: auto;
-        pointer-events: none; /* Prevent interaction when closed */
-        visibility: hidden; /* Hide from screen readers and clicks */
-    }
-
-    .nav-links.active {
-        position: absolute;
-        top: 44px;
-        opacity: 1;
-        max-height: calc(100vh - 44px);
-        overflow-y: auto;
-        pointer-events: all; /* Enable interaction when open */
-        visibility: visible; /* Make visible to screen readers and clicks */
-    }
-
-    .nav-links li {
-        margin: 0;
-        width: 100%;
-        line-height: 0.8;
-    }
-
-    .nav-links a {
-        font-size: 20px;
-        font-weight: 500;
-        padding: 0px 15px;
-        display: block;
-        text-align: left;
-        color: #1a1a1a;
-        line-height: 1.5;
-    }
-
-    .nav-links li:first-of-type:not(.logo-item) {
-        margin-top: 0;
-        padding-top: 0;
-    }
-
-    .nav-links li:nth-child(2) a {
-        font-weight: 700;
-    }
-
-    .nav-links li:first-child a {
-        font-weight: normal;
-    }
-
-    .nav-links li:last-child {
-        margin-bottom: 10px;
-    }
-
-    .hamburger.active .bar:nth-child(2) {
-        opacity: 0;
-    }
-
-    .hamburger.active .bar:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-
-    .hamburger.active .bar:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
-
-    .logo-link {
-        position: relative;
-        z-index: 100;
-    }
-
-    .logo-item {
-        margin-bottom: 15px;
-        margin-right: 0;
-    }
-
-    .mobile-logo {
-        display: block;
-    }
-
-    .desktop-nav .logo-item {
-        display: none;
-    }
-
-    .main {
-        min-height: 100vh;
-        margin-top: 0;
-    }
-
-    .featured-section {
-        min-height: 300px;
-        padding: 20px 0;
-    }
-
-    .featured-games {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        padding: 0 15px;
-    }
-
-    .game-card {
-        backdrop-filter: blur(1vh);
-    }
-
-    .game-card img {
-        height: 150px;
-    }
-
-    .footer {
-        padding: 15px 0;
-    }
-
-    .footer p {
-        font-size: 12px;
-    }
-}
-
-.footer-container {
+.games-list {
     display: flex;
-    justify-content: space-around;
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    flex-direction: column;
+    gap: 0;
 }
 
-.footer-column {
-    flex: 1;
-    padding: 0 20px;
+.game-hero {
+    width: 100%;
+    height: 70vh;
+    min-height: 400px;
+    position: relative;
+    will-change: transform;
 }
 
-.footer-column h3 {
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    color: var(--section-title-color);
+.game-image {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    perspective: 1px;
 }
 
-.footer-column p {
-    color: var(--text-color);
+.game-background {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background-size: cover;
+    background-position: center center;
+    -webkit-filter: blur(5px);
+    filter: blur(5px);
+    z-index: -1;
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
 }
 
-.footer-column ul {
-    list-style: none;
-    padding: 0;
+.game-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 15%, rgba(0, 0, 0, 0.4) 50%, rgba(0, 0, 0, 0.85) 85%, rgba(0, 0, 0, 0.95) 100%);
+    z-index: 1;
 }
 
-.footer-column ul li {
-    margin-bottom: 10px;
+.game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 2;
+    text-align: left;
+    padding: 5vw;
 }
 
-.footer-column ul li a {
-    color: var(--text-color);
-    text-decoration: none;
-    transition: color 0.2s ease;
+.game-overlay h3 {
+    color: white;
+    font-size: 48px;
+    font-family: 'Instrument Serif', serif;
+    font-weight: normal;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin: 0 0 20px 0;
+    max-width: 80%;
 }
 
-.footer-column ul li a:hover {
-    color: var(--nav-link-hover-color);
+.game-description {
+    color: white;
+    font-size: 18px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    max-width: 60%;
+    line-height: 1.6;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
 }
 
-.footer-bottom {
+.play-button {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 12px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 50px; /* Fully curved capsule shape */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    position: relative;
+}
+
+.play-button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.play-button:hover {
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+}
+
+.play-button:hover::after {
+    opacity: 1;
+}
+
+.play-icon {
+    width: 16px;
+    height: 16px;
+    filter: invert(1); /* Invert to black since SVG is white by default */
+}
+
+/* Home page specific styles */
+.home-page .hero-section {
+    height: 100vh;
+}
+
+/* Games page specific styles */
+.games-page .hero-section {
+    height: 100vh;
+}
+
+.games-page .hero-section h1 {
+    font-size: 72px;
+}
+
+.games-page .hero-section .subtitle {
+    font-size: 22px;
+}
+
+h1 {
+    color: white;
+    font-size: 72px;
     text-align: center;
-    padding: 20px;
-    border-top: 1px solid var(--header-border);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 400;
+    z-index: 1;
+    font-family: 'Instrument Serif', serif;
+    font-weight: normal;
 }
 
+.subtitle {
+    color: white;
+    font-size: 22px;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+}
