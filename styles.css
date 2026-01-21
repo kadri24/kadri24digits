@@ -254,6 +254,7 @@ body {
     transition: all 0.3s ease;
     overflow: hidden;
     position: relative;
+    text-decoration: none; /* Remove underline from anchor tags */
 }
 
 .play-button::after {
@@ -290,6 +291,17 @@ body {
 /* Games page specific styles */
 .games-page .hero-section {
     height: 100vh;
+}
+
+/* Copyright footer */
+.copyright-footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    width: 100%;
 }
 
 .games-page .hero-section h1 {
