@@ -136,7 +136,7 @@ body {
     background-color: #000;
     position: relative;
     z-index: 2;
-    padding: 60px 0;
+    padding-top: 60px;
     max-width: 100%;
 }
 
