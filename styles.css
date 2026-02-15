@@ -13,8 +13,25 @@ html, body {
 
 html {
     scroll-behavior: smooth;
-    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) rgba(0,0,0,1);
 }
+
+/* Webkit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 6px;
+    background: rgba(10, 10, 10, 0.8);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(40, 40, 40, 0.6);
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 
 body {
     font-family: 'Inter', sans-serif;
@@ -290,4 +307,111 @@ body {
 /* Games page specific styles */
 .games-page .hero-section {
     height: 100vh;
+}
+
+/* ==============================
+   Responsive / Mobile Styles
+   ============================== */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        padding: 0 20px;
+    }
+
+    .hero-section .subtitle {
+        padding: 0 24px;
+    }
+
+    .games-section h2 {
+        font-size: 36px;
+        margin-bottom: 40px;
+    }
+
+    .game-hero {
+        height: 70vh;
+        min-height: 400px;
+    }
+
+    .game-overlay {
+        padding: 30px 24px;
+    }
+
+    .game-overlay h3 {
+        font-size: 32px;
+        max-width: 100%;
+    }
+
+    .game-description {
+        font-size: 15px;
+        max-width: 90%;
+        margin-bottom: 24px;
+    }
+
+    .play-button {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+
+    .nav-container {
+        padding: 0 10px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .hero-section h1 {
+        padding: 0 16px;
+    }
+
+    .hero-section .subtitle {
+        padding: 0 20px;
+        line-height: 1.5;
+    }
+
+    .games-section h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+    }
+
+    .game-hero {
+        height: 70vh;
+        min-height: 420px;
+    }
+
+    .game-overlay {
+        padding: 24px 20px;
+    }
+
+    .game-overlay h3 {
+        font-size: 26px;
+        margin-bottom: 14px;
+    }
+
+    .game-description {
+        font-size: 14px;
+        max-width: 100%;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .play-button {
+        font-size: 13px;
+        padding: 10px 18px;
+    }
+
+    .navbar {
+        padding: 10px;
+    }
+}
+
+/* Very small screens - only shrink title if it truly can't fit */
+@media (max-width: 360px) {
+    .hero-section h1 {
+        font-size: clamp(32px, 18vw, 72px);
+    }
+
+    .hero-section .subtitle {
+        font-size: clamp(14px, 5vw, 22px);
+    }
 }
