@@ -25,10 +25,13 @@ function initSmoothScrolling() {
             // Store instance for parallax
             lenisInstance = lenis;
 
+            // Connect Lenis scroll to parallax
+            lenis.on('scroll', function(e) {
+                updateParallax(e.scroll);
+            });
+
             function raf(time) {
                 lenis.raf(time);
-                // Update parallax on each frame
-                updateParallax(lenis.scroll);
                 requestAnimationFrame(raf);
             }
 
@@ -44,6 +47,12 @@ function initSmoothScrolling() {
     // Fallback to native smooth scrolling
     console.log('Using native smooth scroll as fallback');
     document.documentElement.style.scrollBehavior = 'smooth';
+    
+    // Fallback: update parallax on scroll
+    window.addEventListener('scroll', function() {
+        updateParallax(window.scrollY);
+    });
+    
     return false;
 }
 
